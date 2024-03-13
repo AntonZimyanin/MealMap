@@ -83,7 +83,7 @@ class UserDishController extends Controller
     {
         $data = $request->validated();
         $post = $userDish::update($data);
-        $post->update($data);
+        
         return UserDishResource::make($post);
     }
 }

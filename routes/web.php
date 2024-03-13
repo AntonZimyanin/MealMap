@@ -31,4 +31,4 @@ Route::get('/images/{filename}', function ($filename) {
 });
 
 
-Route::post('user-dishes/add', [UserDishController::class,'store'])->name('user-dishes.store');
+Route::resource('user-dish', UserDishController::class);
