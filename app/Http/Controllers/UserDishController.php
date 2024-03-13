@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserDish\StoreDishRequest;
+use App\Http\Requests\UserDish\UpdateDishRequest;
 use App\Models\UserDishes;
 use Illuminate\Http\Request;
+
+use App\Http\Resources\UserDish\UserDishResource;
 
 /**
  * @SWG\Post(
@@ -52,14 +56,34 @@ use Illuminate\Http\Request;
 
 class UserDishController extends Controller
 {
-    public function store(Request $request)
+
+    public function index() { 
+        $userDishes = UserDishes::all();
+        return UserDishResource::collection($userDishes); 
+    }
+
+
+    public function store(StoreDishRequest $request)
     {
-        UserDishes::create([ 
-            'user_id'=> $request->user_id,  
-            'title' => $request->input('title'),
-            'price' => $request->input('price'),    
-            'description' => $request->input('description'),    
-            'image' => $request->input('image'),
-        ]);
+        $data = $request->validated();
+        $post = UserDishes::create($data);
+
+        return UserDishResource::make($post);   
+        // UserDishes::create([ 
+        //     'user_id'=> $request->user_id,  
+        //     'title' => $request->input('title'),
+        //     'price' => $request->input('price'),    
+        //     'description' => $request->input('description'),    
+        //     'image' => $request->input('image'),
+        // ]);
+    }
+
+
+    public function update(UpdateDishRequest $request, UserDishes $userDish)
+    {
+        $data = $request->validated();
+        $post = $userDish::update($data);
+        $post->update($data);
+        return UserDishResource::make($post);
     }
 }
