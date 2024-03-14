@@ -21,6 +21,7 @@ class StoreDishRequest extends FormRequest
      */
     public function rules(): array
     {
+        // echo "$user_id, $title, $price $description $image";
         return [
             'user_id'=> ['require', 'integer'],  
             'title' => ['required', 'string', 'max:255'],
